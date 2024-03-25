@@ -91,11 +91,13 @@ public class SecurityConfig {
                     auth
                             .requestMatchers("api/v1/auth/login")
                             .permitAll()
-                            .requestMatchers(HttpMethod.GET,"api/v1/news/")
+                            .requestMatchers(HttpMethod.GET,"api/v1/news")
                             .permitAll()
                             .requestMatchers(HttpMethod.POST,"api/v1/news/{id}/comments")
                             .permitAll()
                             .requestMatchers("api/v1/users")
+                            .hasAuthority(Role.SYS_ADMIN.name())
+                            .requestMatchers(HttpMethod.DELETE, "api/v1/news/{id}")
                             .hasAuthority(Role.SYS_ADMIN.name())
                             .anyRequest()
                             .authenticated();

@@ -41,14 +41,14 @@ public class DigitalBlogApplication {
                     userRepository.save(u);
                 }
             }
-//            for (int i = 1; i <= 20; i++) {
-//                User u = userRepository.findUserByUsername("Han"+i).orElseThrow();
-//                Article a = new Article();
-//                a.setTitle("News_"+i);
-//                a.setContent("Content_"+i);
-//                a.setCreatedBy(u);
-//                articleRepository.save(a);
-//            }
+            for (int i = 1; i <= 20; i++) {
+                User u = userRepository.findUserByUsername("Han"+i).orElseThrow();
+                Article a = new Article();
+                a.setTitle("News_"+i);
+                a.setContent("Content_"+i);
+                a.setCreatedBy(u);
+                articleRepository.save(a);
+            }
         };
     }
 }

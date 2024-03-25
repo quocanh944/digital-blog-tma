@@ -27,6 +27,7 @@ public class NewsController {
 
     @GetMapping("")
     @ApiResponse(responseCode = "201")
+    @SecurityRequirements()
     public ResponseEntity<Page<ArticleDTO>> readArticles(
             @RequestParam(
                     value = "page",
