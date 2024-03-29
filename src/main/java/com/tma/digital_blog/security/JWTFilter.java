@@ -46,14 +46,8 @@ public class JWTFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         try {
             String token = resolveToken(request);
-            if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
+            if (StringUtils.hasText(token) && jwtTokenProvider.validateAccessToken(token)) {
                 String username = jwtTokenProvider.getUsernameFromToken(token);
-                String tokenFromRedis = redisService.getJWTFromUsername(username);
-
-                if (!token.equals(tokenFromRedis)) {
-                    redisService.removeJTWRedis(username);
-                    throw new BadCredentialsException("Token not match with Redis");
-                }
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                         userDetails.getAuthorities());

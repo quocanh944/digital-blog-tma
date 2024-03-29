@@ -14,7 +14,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     public void addJWTRedis(String jwt) {
-        redisTemplate.opsForValue().set(jwtTokenProvider.getUsernameFromToken(jwt), jwt);
+        redisTemplate.opsForValue().set(jwtTokenProvider.getUsernameFromRefreshToken(jwt), jwt);
     }
 
     @Override

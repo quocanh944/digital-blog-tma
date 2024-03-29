@@ -89,11 +89,13 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     auth
-                            .requestMatchers("api/v1/auth/login")
+                            .requestMatchers("api/v1/auth/login", "api/v1/auth/refresh-token")
                             .permitAll()
                             .requestMatchers(HttpMethod.GET,"api/v1/news")
                             .permitAll()
                             .requestMatchers(HttpMethod.POST,"api/v1/news/{id}/comments")
+                            .permitAll()
+                            .requestMatchers(HttpMethod.GET,"api/v1/news/{id}/comments")
                             .permitAll()
                             .requestMatchers("api/v1/users")
                             .hasAuthority(Role.SYS_ADMIN.name())

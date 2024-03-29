@@ -1,9 +1,6 @@
 package com.tma.digital_blog.controller;
 
-import com.tma.digital_blog.dto.AuthResponseDTO;
-import com.tma.digital_blog.dto.ChangePasswordDTO;
-import com.tma.digital_blog.dto.LoginDTO;
-import com.tma.digital_blog.dto.UserDTO;
+import com.tma.digital_blog.dto.*;
 import com.tma.digital_blog.security.JWTTokenProvider;
 import com.tma.digital_blog.service.AuthService;
 import com.tma.digital_blog.service.RedisService;
@@ -29,9 +26,9 @@ public class AuthController {
     @PostMapping("/login")
     @SecurityRequirements()
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
-        String token = authService.login(loginDTO);
-        redisService.addJWTRedis(token);
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        AuthResponseDTO authResponseDTO = authService.login(loginDTO);
+        redisService.addJWTRedis(authResponseDTO.getRefreshToken());
+        return new ResponseEntity<>(authResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
@@ -42,14 +39,14 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<AuthResponseDTO> refreshToken(
-            Authentication authentication
-    ) {
+            @RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO
+            ) {
 
-        String newToken = jwtTokenProvider.createToken(authentication);
-        redisService.addJWTRedis(newToken);
+        AuthResponseDTO authResponseDTO = authService.refreshToken(refreshTokenRequestDTO);
+        redisService.addJWTRedis(authResponseDTO.getRefreshToken());
 
         return new ResponseEntity<>(
-                new AuthResponseDTO(newToken),
+                authResponseDTO,
                 HttpStatus.OK
         );
     }
